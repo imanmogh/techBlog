@@ -12,11 +12,14 @@ Comment.init(
       autoIncrement: true,
     },
     comment_text: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [2]
+      },
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'user',
         key: 'id',
@@ -24,7 +27,6 @@ Comment.init(
     },
     post_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'post',
         key: 'id',
@@ -33,6 +35,9 @@ Comment.init(
   },
   {
     sequelize,
+    // adds a createdAt and updatedAt timestamps to the model
+    // default is true, so you can maybe take this line out
+    timestamps: true,
     freezeTableName: true,
     underscored: true,
     modelName: 'comment',

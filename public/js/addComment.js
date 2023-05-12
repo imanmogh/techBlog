@@ -1,26 +1,29 @@
-const addComment = async (e) => {
-    e.preventDefault();
-
-    const urlString = window.location.toString().split('/')
-    const postId  = urlString[4];
-
-    const contents = $('#comment').val().trim();
-    
-    if (contents) {
-        const response = await fetch(`/api/comment/${postId}`, {
-            method: 'POST',
-            body: JSON.stringify({contents}),
-            headers: {'Content-Type': 'application/json'}
-          });
-        const data = await response.json()
-        if (response.ok) {
-            alert('Comment Added')
-            document.location.replace(`/post/${postId}`)
-        } else {
-            alert("Something went wrong. Can't add comment")
-        }
+async function commentFormHandler(event) {
+    event.preventDefault();
+  
+    const comment_text = document.querySelector("#comment-body").value.trim();
+    const post_id = window.location.href.split("/").pop();
+  
+    if (comment_text && post_id) {
+      const response = await fetch("/api/comment", {
+        method: "POST",
+        body: JSON.stringify({
+          comment_text,
+          post_id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response.ok) {
+        document.location.reload();
+      } else {
+        alert(response.statusText);
+      }
     }
-    
-}
-
-$('#add-comment').click(addComment);
+  }
+  
+  document
+    .querySelector("#commentBtn")
+    .addEventListener("click", commentFormHandler);

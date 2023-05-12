@@ -1,26 +1,26 @@
-const addPost = async (e) => {
-    e.preventDefault(); 
 
-    const contents = $('#modal-content-textarea').val();
-    const title = $('#modal-title-input').val().trim();
-   if  (contents && title) {
+async function newFormHandler(event) {
+    event.preventDefault();
+  
+    const title = document.querySelector('input[name="post-title"]').value.trim();
+    const contents = document.querySelector('input[name="post-content"]').value.trim();
+  
     const response = await fetch(`/api/post`, {
-        method: 'POST', 
-        body: JSON.stringify({ title, contents}), 
-        headers: { 'Content-Type': 'application/json' }
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        contents
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
-    const data = await response.json();
-
+  
     if (response.ok) {
-        alert(data.message)
-        document.location.replace('/dashboard');
+      document.location.replace('/dashboard');
     } else {
-        alert("Something went wrong. Can't create post");
+      alert(response.statusText);
     }
-   }
-    
-
-    
-}
-
-$('#add-post').click(addPost);
+  }
+  
+  document.querySelector('.new-post-form').addEventListener('submit', newFormHandler);

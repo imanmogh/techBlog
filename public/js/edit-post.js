@@ -1,23 +1,27 @@
-const editPost = async (e) => {
-    e.preventDefault(); 
-    const urlString = window.location.toString().split('/')
-    const postId  = urlString[4];
-  
-    const contents = $('#content-textarea').val();
-    const title = $('#title-input').val();
+const post_id = window.location.href.split("/").pop();
+console.log(post_id);
 
-    const response = await fetch(`/api/post/${postId}`, {
-        method: 'PUT', 
-        body: JSON.stringify({ title, contents }),
-        headers: { 'Content-Type': 'application/json' }
-    });
+const editButtonHandler = async (event) => {
+  event.preventDefault();
 
-    if (response.ok) {
-        alert('Post Updated')
-        document.location.replace('/dashboard');
-    } else {
-        alert("Something went wrong. Can't Update post");
+  const title = document.querySelector('input[name="post-title"]').value.trim();
+  const contents = document.querySelector('input[name="post-content"]').value.trim();
+
+  console.log(post_id);
+  await fetch(`/api/post/${post_id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      title,
+      contents,
+    }),
+    headers: {
+      'Content-Type': 'application/json'
     }
-}
+  });
 
-$('#update-post').click(editPost);
+  document.location.replace("/dashboard");
+};
+
+document
+  .querySelector("#saveBtn")
+  .addEventListener("click", editButtonHandler);
