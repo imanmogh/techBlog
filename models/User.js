@@ -19,9 +19,7 @@ class User extends Model {
 // Defines a table called User
 User.init(
   {
-    // Defines the columns/fields for the User table
     id: {
-      // Configures the associations
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,

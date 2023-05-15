@@ -1,51 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Tech Word</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <title>Tech Blog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="/css/jass.css">
   <link rel="stylesheet" href="/css/style.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <link rel='icon' type='image/x-icon' href='/assets/images/favicon.ico' />
 </head>
 
-<body>
-  <div class="container wrapper">
-<header class="row">
-  <h1><a class="logo" href="/">The Tech Word</a></h1>
-      <nav>
-        <ul class="navbar">
-              <li><a class="link" href="/">Home</a></li>
-               <li><a class="link" href="/dashboard">Dashboard</a></li>
-              {{#if loggedIn}}
-               <li><a class="link" href="/" id="logout">Logout</a></li>
-              {{else}}
-               <li><a class="link" href="/login">Login</a></li>
-              {{/if}}
-        </ul>
-      </nav>
+<div class="wrapper">
+  <header>
+    <h1 class="has-text-black px-3 py-3 has-text-weight-bold">Another Tech Blog</h1>
+    <nav class="navbar mt-2">
+      {{#if logged_in}}
+      <ul>
+        <li>
+          <a href="/" class="navbar-item is-hoverable pt-1 button is-warning is-focused" id="main-title">
+            Homepage</a>
+        </li> <br>
+        <li>
+          <a href="/dashboard" class="navbar-item is-hoverable pt-1 button is-link is-outlined" id="dashboard">
+            Dashboard</a>
+        </li>
+        <li>
+          <a href="/dashboard/create" class="navbar-item is-hoverable pt-1 button is-primary is-outlined" id="create">
+            Create Post</a>
 
-    
-</header>
+        <li>
+          <a href='/logout' class="navbar-item is-hoverable pt-1 button is-danger is-outlined" id="logout">
+            Leave</a>
+        </li>
+      </ul>
+      {{else}}
+      <ul>
+        <li>
+          <a href="/" class="navbar-item is-hoverable pt-1 button is-warning is-focused" id="main-title">
+            Homepage</a>
+        </li> <br>
+        <li>
+          <a href="/login" class="navbar-item is-hoverable pt-1 button is-link is-outlined" id="login">
+            Log In</a>
+        </li>
+        <li>
+          <a href="/signup" class="navbar-item is-hoverable pt-1 button is-success is-outlined" id="signup">
+            Sign Up</a>
+        </li>
+      </ul>
+      {{/if}}
 
-<main>
-  {{{ body }}}
-</main>
+    </nav>
+  </header>
 
-<footer class="footer">
-    <div class="row">
-        <p>
-          The Tech Word by <a href="https://github.com/leonhsu95"> Leon Hsu</a>
-        </p>
+  <main>
+    {{{ body }}}
+  </main>
+
+  <footer class="footer rows">
+    <div class="content has-text-centered">
+      <a href="/">Homepage</a>
+      {{#if logged_in}} |
+      <a href="/dashboard/">Dashboard</a> |
+      <a href="/dashboard/create/">Create Post</a>
+      {{else}}
+      | <a href="/login">Log In</a> | <a href="/signup">Sign Up</a>
+      {{/if}}
     </div>
-</footer>
-
-    {{#if loggedIn}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-    <script src="/js/logout.js"></script>
-    {{/if}}
+  </footer>
 </div>
+
+
+{{#if logged_in}}
+<script src='/js/logout.js'></script>
+{{/if}}
+
 </body>
 
 </html>

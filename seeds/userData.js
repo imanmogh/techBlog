@@ -1,7 +1,7 @@
 const { User } = require('../models');
 
 const bcrypt = require('bcrypt');
-const hash = bcrypt.hashSync('password123', 10);
+const hash = bcrypt.hashSync('password1234', 10);
 // passwords for seed data will now be "password123"
 
 const userData = [

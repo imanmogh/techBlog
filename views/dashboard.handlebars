@@ -1,16 +1,37 @@
-<h2>Your Posts</h2>
+<div class="mb-5 pt-3">
+  <h2 class="title">This is your dashboard</h2>
+  <h3>A place to add, edit, and delete your posts.</h3>
+  <hr> <br><br>
+</div>
 
-<button type="submit" class="btn new-post-button"><a class="link" href="/dashboard/new">+ New Post</a></button>
-<section>
-{{#if posts.length}}
+<ul>
+  <li>
+    <a href="/dashboard/create" class="button is-primary is-pulled-right" id="create">New Post
+    </a>
+  </li>
+</ul>
 
-  
+
+<div>
+  {{#if posts.length}}
+  <div class="col-md-6 post-list">
     {{#each posts as |post|}}
-      {{> dashboard-postinfo post}}
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <h4><a href="/post/{{post.id}}">{{post.title}}</a></h4>
+      </div>
+      <div class="col-md-4">
+        <a href="url_to_delete" onclick="return confirm('Are you sure you want to delete this item?');">
+          <button class="btn btn-sm btn-danger delbtn post-list" data-id="{{post.id}}">Delete</button>
+          </a>
+        <a href="/dashboard/edit/{{post.id}}">
+          <button class="btn btn-sm btn-warning edit-post-form">Edit</button>
+          </a>
+      </div>
+    </div>
     {{/each}}
+  </div>
+  {{/if}}
+</div>
 
-
-{{/if}}
-</section>
-
-<script src="/js/add-post.js"></script>
+<script src='/js/delete-post.js'></script>

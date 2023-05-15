@@ -1,23 +1,33 @@
-<section class="single-post-container">
-{{> post-info post}}
+<div>
+  {{> post-info post}}
+</div>
 
-{{#if loggedIn}}
-<div class="comment-container">
-    <h3 class="card-header"></h3>
-    <form class="card-body comment-form" id="comment-form">
-    <div class="form-row">
-        <label class="form-label">Comment</label>
-        <input id="comment" name="comment-body" class="form-input  form-control" />
-    </div>
-        <button type="submit" class="btn">Submit</button>
-    </form>
+<div>
+  {{> comments post.comments}}
+</div>
+
+{{#if logged_in}}
+<br /><br /><br>
+<form class='form new-comment-form'>
+  <div class='comment-group'>
+    <label for='comment-name'>Tell them about it!</label>
+    <input class='form-input' placeholder='Comment..' type='text' id='comment-body' name='comment-body' />
+    <input type="hidden" name="post-id" value="{{post_id}}" />
+  </div>
+  <div class='form-group'>
+    <button type='submit' class='btn btn-primary button' id='commentBtn'>Add Comment</button>
+  </div>
+</form>
+<br> <br>
+
+{{else}}
+<div class="has-text-centered">
+<h5>leave a comment?</h5>
+<a href="/login" class="button is-link is-hoverable pt-1 is-outlined ">Log In</a>
+
 </div>
 {{/if}}
 
-{{> comments post.comments}}
-
-</section>
-
-{{#if loggedIn}}
-<script src="/js/comment.js"></script>
+{{#if logged_in}}
+<script src="/js/addComment.js"></script>
 {{/if}}
