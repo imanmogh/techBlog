@@ -2,6 +2,9 @@
   "name": "mvc-tech-blog",
   "version": "1.0.0",
   "description": "model-view-controller tech blog",
+  "engines": {
+    "node": "18.15.0"
+  },
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
