@@ -29,7 +29,7 @@ To use the package as a consumer, simply visit the deployed link and create an a
 To use the package as a Developer, after following the installation steps above, at the root of the project directory run command 'npm start' or 'npm run dev' in your CLI, then click the link in the CLI to view site from localhost.
 
 ## Deployment
-Live URL: <a href="https://another-bad-music-review-woo.herokuapp.com/">Another Bad Music Review</a>  
+Live URL: <a href="https://mvc--techblog.herokuapp.com">Another Tech Blog</a>  
 
 ![screentshot](techBlog/assets/screenshot-1.png)
 
