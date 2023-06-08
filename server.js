@@ -2,7 +2,6 @@ const express = require('express');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
 const path = require('path');
-require('dotenv').config();
 
 // Helper function
 const helpers = require('./utils/helpers');
@@ -16,8 +15,7 @@ const hbs = exphbs.create({ helpers });
 const session = require('express-session');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-
+const port = process.env.PORT || 3001
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 // Create session
@@ -53,7 +51,7 @@ app.use(routes);
 
 // Turns on connection to database and server
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () =>
-    console.log(`Now listening on http://localhost:${PORT}`)
+  app.listen(port, () =>
+    console.log(`Now listening on http://localhost:${port}`)
   );
 });
