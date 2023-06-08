@@ -4,25 +4,27 @@ const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
 
+// Dashboard / dashboard displaying posts created by logged in user ===================================
 router.get('/', withAuth, async (req, res) => {
   try {
     const postData = await Post.findAll({
       where: {
+        // ID from the session
         user_id: req.session.user_id,
       },
-      attributes: ['id', 'title', 'created_at', 'contents', 'updated_at', 'user_id'],
+      attributes: ['id', 'title', 'created_at', 'post_body', 'updated_at', 'user_id'],
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'comment_body', 'post_id', 'user_id', 'created_at'],
           include: {
             model: User,
-            attributes: ['username'],
+            attributes: ['username', 'github'],
           },
         },
         {
           model: User,
-          attributes: ['username',],
+          attributes: ['username', 'github'],
         },
       ],
     });
@@ -36,6 +38,7 @@ router.get('/', withAuth, async (req, res) => {
   }
 });
 
+// Editing a post / rendering edit-post page ======================================================
 router.get('/edit/:id', withAuth, async (req, res) => {
   try {
     const editPost = await Post.findByPk(req.params.id);
@@ -55,25 +58,27 @@ router.get('/edit/:id', withAuth, async (req, res) => {
   }
 });
 
+// Creating a post / rendering add-post page ======================================================
 router.get('/create', withAuth, async (req, res) => {
   try {
     const newPost = await Post.findAll({
       where: {
+        // use the ID from the session
         user_id: req.session.user_id,
       },
-      attributes: ['id', 'title', 'created_at', 'contents', 'updated_at', 'user_id'],
+      attributes: ['id', 'title', 'created_at', 'post_body', 'updated_at', 'user_id'],
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'comment_body', 'post_id', 'user_id', 'created_at'],
           include: {
             model: User,
-            attributes: ['username'],
+            attributes: ['username', 'github'],
           },
         },
         {
           model: User,
-          attributes: ['username'],
+          attributes: ['username', 'github'],
         },
       ],
     });

@@ -19,7 +19,7 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    contents: {
+    post_body: {
       type: DataTypes.TEXT,
       allowNull: true,
     },

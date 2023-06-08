@@ -19,7 +19,9 @@ class User extends Model {
 // Defines a table called User
 User.init(
   {
+    // Defines the columns/fields for the User table
     id: {
+      // Configures the associations
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
@@ -29,6 +31,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+    },
+    github: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -45,6 +51,10 @@ User.init(
         len: [7],
       },
     },
+    bio: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   },
 
   {

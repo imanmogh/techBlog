@@ -1,37 +1,40 @@
+// Contains all of the user-facing routes
 const router = require("express").Router();
 const sequelize = require("../config/connection");
 const { Post, User, Comment } = require("../models");
 const withAuth = require("../utils/auth");
 
+// Homepage / GET: all posts ==========================================================
 router.get("/", async (req, res) => {
   console.log(req.session);
   try {
     // Get all posts and JOIN with user data
     const postData = await Post.findAll({
       // order: [['date', 'DESC']],
-      attributes: ['id', 'title', 'created_at', 'updated_at', 'contents'],
+      attributes: ['id', 'title', 'created_at', 'updated_at', 'post_body'],
       include: [
         {
           model: Comment,
           attributes: [
             'id',
-            'comment_text',
+            'comment_body',
             'post_id',
             'user_id',
             'created_at',
           ],
           include: {
             model: User,
-            attributes: ['username'],
+            attributes: ['username', 'github'],
           },
         },
         {
           model: User,
-          attributes: ['username'],
+          attributes: ['username', 'github'],
         },
       ],
     });
-   const posts = postData.map((post) => post.get({ plain: true }));
+    // serialize data so the template can read it
+    const posts = postData.map((post) => post.get({ plain: true }));
     res.render('homepage', {
       posts,
       logged_in: req.session.logged_in,
@@ -42,27 +45,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Single post view / directs to single-post page =======================================
 router.get("/post/:id", async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
-      attributes: ['id', 'title', 'created_at', 'updated_at', 'contents'],
+      attributes: ['id', 'title', 'created_at', 'updated_at', 'post_body'],
       include: [
         {
           model: User,
-          attributes: ['username'],
+          attributes: ['username', 'github'],
         },
         {
           model: Comment,
           attributes: [
             'id',
-            'comment_text',
+            'comment_body',
             'post_id',
             'user_id',
             'created_at',
           ],
           include: {
             model: User,
-            attributes: ['username'],
+            attributes: ['username', 'github'],
           },
         },
       ],
@@ -107,6 +111,7 @@ router.get('/users/:id', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+  // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
     res.redirect('/dashboard');
     return;

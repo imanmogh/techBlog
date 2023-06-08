@@ -3,21 +3,25 @@ const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 
+// Get all users  ======================================================
 router.get('/', (req, res) => {
   Post.findAll({
-
-    attributes: ['id', 'title', 'created_at', 'contents', 'updated_at',],
+    // where: {
+    //   id: req.params.id,
+    // },
+    attributes: ['id', 'title', 'created_at', 'post_body', 'updated_at',],
     include: [
+      // include the Comment model here:
       {
         model: User,
-        attributes: ['username'],
+        attributes: ['username', 'github'],
       },
       {
         model: Comment,
-        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+        attributes: ['id', 'comment_body', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
-          attributes: ['username'],
+          attributes: ['username', 'github'],
         },
       },
     ],
@@ -36,24 +40,26 @@ router.get('/', (req, res) => {
 });
 
 
+// Get single post by id ================================================
 router.get('/:id', withAuth, async(req, res) => {
   console.log('made it to get post by id');
   try {
     const idPost = await Post.findByPk({
-    attributes: ['id', 'title', 'created_at', 'contents'],
+    attributes: ['id', 'title', 'created_at', 'post_body'],
     order: [['created_at', 'DESC']],
     include: [
+      // Comment model here -- attached username to comment
       {
         model: Comment,
-        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+        attributes: ['id', 'comment_body', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
-          attributes: ['username'],
+          attributes: ['username', 'github'],
         },
       },
       {
         model: User,
-        attributes: ['username'],
+        attributes: ['username', 'github'],
       },
     ],
   })
@@ -69,6 +75,7 @@ router.get('/:id', withAuth, async(req, res) => {
   }
 });
 
+// Create post ====================================================
 router.post('/', withAuth, async (req, res) => {
   console.log("made it to create post route");
   try {
@@ -83,6 +90,7 @@ router.post('/', withAuth, async (req, res) => {
   }
 });
 
+// Delete post ===========================================================
 router.delete('/:id', withAuth, async (req, res) => {
   try {
     const postData = await Post.destroy({
@@ -102,6 +110,7 @@ router.delete('/:id', withAuth, async (req, res) => {
   }
 });
 
+// Update Post ===========================================================
 router.put('/:id', withAuth, async (req, res) => {
   try {
     console.log(req.body.post_id);

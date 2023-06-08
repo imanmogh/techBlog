@@ -18,7 +18,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-
+// Get specific user
+// GET /api/users/1
 router.get('/:id', async (req, res) => {
   try {
     const userData = await User.findByPk(req.params.id, {
@@ -26,11 +27,11 @@ router.get('/:id', async (req, res) => {
       include: [
         {
           model: Post,
-          attributes: ['id', 'title', 'contents', 'created_at', 'updated_at', 'user_id'],
+          attributes: ['id', 'title', 'post_body', 'created_at', 'updated_at', 'user_id'],
         },
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'created_at'],
+          attributes: ['id', 'comment_body', 'created_at'],
           include: {
             model: Post,
             attributes: ['title']
@@ -56,6 +57,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
+// Sign Up / Create user ====================================================================
 router.post('/signup', async (req, res) => {
   try {
     const newUser = await User.create({
@@ -67,6 +69,7 @@ router.post('/signup', async (req, res) => {
       req.session.user_id = newUser.id;
       req.session.username = newUser.username;
       req.session.email = newUser.email
+      req.session.github = newUser.github;
       req.session.logged_in = true;
       req.session.username = req.body.username;
       res.status(200).json(newUser);
@@ -86,6 +89,7 @@ router.post('/', async (req, res) => {
       req.session.user_id = userData.id;
       req.session.username = userData.username;
       req.session.email = userData.email
+      req.session.github = userData.github;
       req.session.logged_in = true;
       res.json({ user: userData, message: "You are now logged in!" });
 
@@ -97,6 +101,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Log In =============================================================
 router.post('/login', async (req, res) => {
   try {
     const userData = await User.findOne({
@@ -122,6 +127,7 @@ router.post('/login', async (req, res) => {
       req.session.user_id = userData.id;
       req.session.username = userData.username;
       req.session.email = userData.email;
+      req.session.github = userData.github;
       req.session.logged_in = true;
       res.json({ user: userData, message: 'You are now logged in!' });
     });
@@ -130,6 +136,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Log Out =============================================================
 router.post('/logout', (req, res) => {
   if (req.session.logged_in) {
     req.session.destroy(() => {
@@ -139,5 +146,3 @@ router.post('/logout', (req, res) => {
     res.status(404).end();
   }
 });
-
-module.exports = router;

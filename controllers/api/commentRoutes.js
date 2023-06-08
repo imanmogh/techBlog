@@ -3,6 +3,7 @@ const { Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 
+// Get all comments =======================================================
 router.get('/', async (req, res) => {
   try {
     const commentData = await Comment.findAll({});
@@ -12,14 +13,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Create new comment =====================================================
 router.post('/', withAuth, async (req, res) => {
   try {
     // check the session
     if (req.session) {
       const newComment = await Comment.create({
-        comment_text: req.body.comment_text,
+        comment_body: req.body.comment_body,
+        // use the id from the session
         user_id: req.session.user_id,
         post_id: req.body.post_id,
+        // date_created: req.body.timestamp,
       });
       res.status(200).json(newComment);
     }

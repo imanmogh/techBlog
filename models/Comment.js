@@ -3,15 +3,18 @@ const sequelize = require('../config/connection');
 
 class Comment extends Model {}
 
+// Defines a table called Comment
 Comment.init(
   {
+    // Defines the columns/fields for the Comment table
     id: {
+      // Configures the associations
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    comment_text: {
+    comment_body: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
